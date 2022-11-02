@@ -1,0 +1,7 @@
+{
+  "name": "high-card",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
