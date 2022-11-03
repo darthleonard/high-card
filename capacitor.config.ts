@@ -1,7 +1,7 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
+  appId: 'com.darthleonard.highcard',
   appName: 'high-card',
   webDir: 'www',
   bundledWebRuntime: false

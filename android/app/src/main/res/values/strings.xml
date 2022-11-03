@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">high-card</string>
+    <string name="title_activity_main">high-card</string>
+    <string name="package_name">com.darthleonard.highcard</string>
+    <string name="custom_url_scheme">com.darthleonard.highcard</string>
+</resources>
