@@ -52,7 +52,7 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: app-dev
-          output-path: ./android/app/debugandroid/app/build/outputs/bundle/debug/app-debug.aab
+          path: ./android/app/debugandroid/app/build/outputs/bundle/debug/app-debug.aab
 
       - name: Upload release bundle
         uses: actions/upload-artifact@v1
