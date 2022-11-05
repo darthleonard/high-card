@@ -39,8 +39,17 @@ jobs:
         run: ionic capacitor build android --release --prod
 
       - name: Generate the Android App Bundle
-      - uses: sparkfabrik/android-build-action@v1.0.0
+        working-directory: ./android/
+        run: ./gradlew bundle
+
+      - name: Upload dev APK
+        uses: actions/upload-artifact@v1
         with:
-          project-path: android
-          output-path: my-app.apk
-          
+          name: app-dev
+          path: ./android/app/debug/app-debug.apk
+
+      - name: Upload release bundle
+        uses: actions/upload-artifact@v1
+        with:
+          name: app-release
+          path: ./android/app/release/app-release.aab
