@@ -42,12 +42,6 @@ jobs:
         working-directory: ./android/
         run: ./gradlew bundle
 
-      - name: Upload dev APK
-        uses: actions/upload-artifact@v1
-        with:
-          name: app-dev
-          path: apk/app-debug.apk
-
       - name: Upload release bundle
         uses: actions/upload-artifact@v1
         with:
