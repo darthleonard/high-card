@@ -42,11 +42,19 @@ jobs:
         working-directory: ./android/
         run: ./gradlew bundle
 
+      - name: Android Build
+        uses: sparkfabrik/android-build-action@v1.0.0
+        with:
+          project-path: .
+          build-type: assemble
+          output-path: app-debug.apk
+          browserstack-upload: false
+
       - name: Upload dev APK
         uses: actions/upload-artifact@v1
         with:
           name: app-dev
-          path: ./android/app/debugandroid/app/build/outputs/bundle/debug/app-debug.aab
+          path: ./android/app/debugandroid/app/build/outputs/debug/app-debug.aab
 
       - name: Upload release bundle
         uses: actions/upload-artifact@v1
