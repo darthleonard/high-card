@@ -32,9 +32,6 @@ jobs:
       - name: Copy Android
         run: ionic capacitor copy android
 
-      - name: Build Android Dev APK
-        run: ionic capacitor build android
-
       - name: Build Android Release APK
         run: ionic capacitor build android --release --prod
 
