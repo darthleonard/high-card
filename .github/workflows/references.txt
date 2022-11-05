@@ -1,0 +1,9 @@
+references
+
+  sparkfabrik/android-build-action
+  https://github.com/sparkfabrik/android-build-action
+
+  https://github.com/sparkfabrik/android-build-action/network/dependents
+
+  nice example of usage:
+  https://github.com/anime-vsub/app/blob/main/.github/workflows/build-apk.yml
