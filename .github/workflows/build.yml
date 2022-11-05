@@ -42,12 +42,6 @@ jobs:
         working-directory: ./android/
         run: ./gradlew bundle
 
-      - name: Build Debug Android App
-      - uses: sparkfabrik/android-build-action@v1.0.0
-        with:
-          project-path: android
-          output-path: ./android/app/debugandroid/app/build/outputs/bundle/debug/app-debug.aab
-
       - name: Upload dev APK
         uses: actions/upload-artifact@v1
         with:
