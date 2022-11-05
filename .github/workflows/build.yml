@@ -45,7 +45,7 @@ jobs:
       - name: Android Build
         uses: sparkfabrik/android-build-action@v1.0.0
         with:
-          project-path: .
+          project-path: ./android/
           build-type: assemble
           output-path: app-debug.apk
           browserstack-upload: false
