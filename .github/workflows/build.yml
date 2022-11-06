@@ -45,6 +45,7 @@ jobs:
           
       - name: Sign app APK
         uses: ilharp/sign-android-release@v1
+        id: sign_app
         with:
           releaseDir: ./android/
           signingKey: ${{ secrets.ANDROID_SIGNING_KEY }}
