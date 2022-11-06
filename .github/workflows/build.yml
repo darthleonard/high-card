@@ -20,6 +20,9 @@ jobs:
         with:
           node-version: 14.x
 
+      - name: Testing echo
+        run: echo '1.1.${github.run_number}'
+
       - name: Install Ionic
         run: npm install -g @ionic/cli
 
@@ -52,5 +55,3 @@ jobs:
         with:
           name: high-card
           path: ${{steps.sign_app.outputs.signedFile}}
-
-echo '1.1.${github.run_number}'
