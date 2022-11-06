@@ -10,7 +10,7 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v2
 
-      - name: Setup java
+      - name: Setup Java
         uses: actions/setup-java@v1
         with:
           java-version: 11
@@ -23,50 +23,50 @@ jobs:
       - name: Install Ionic
         run: npm install -g @ionic/cli
 
-      - name: Install app dependencies
+      - name: Install dpp dependencies
         run: npm install
 
-      - name: Build Ionic App
+      - name: Build Ionic
         run: ionic build
 
       - name: Copy Android
         run: ionic capacitor copy android
 
-      - name: Build Android Release
+      - name: Ionic build android release
         run: ionic capacitor build android --release --prod
 
-      - name: Android Build Bundle
+      - name: Android Build bundle
         uses: sparkfabrik/android-build-action@v1.0.0
         with:
           project-path: ./android/
           build-type: bundle
           output-path: app-release.aab
-          package-name: com.darthleonard.highcard
-          keystore-content: ${{ secrets.ANDROID_SIGNING_KEY }}
-          keystore-password: ${{ secrets.ANDROID_KEY_PASSWORD }}
-          keystore-alias: ${{ secrets.ANDROID_KEY_ALIAS }}
+          #package-name: com.darthleonard.highcard
+          #keystore-content: ${{ secrets.ANDROID_SIGNING_KEY }}
+          #keystore-password: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          #keystore-alias: ${{ secrets.ANDROID_KEY_ALIAS }}
           browserstack-upload: false
           
-      - name: Upload release bunde
-        uses: actions/upload-artifact@v1
+#      - name: Upload release bunde
+#        uses: actions/upload-artifact@v1
+#        with:
+#          name: app-release
+#          path: app-release.aab
+          
+          
+      - name: Sign app bundle
+        uses: ilharp/sign-android-release@v1
+        id: sign_app
         with:
-          name: app-dev
-          path: app-release.aab
-          
-          
-#      - name: Sign app APK
-#        uses: ilharp/sign-android-release@v1
-#        id: sign_app
-#        with:
-#          releaseDir: ./android/
-#          signingKey: ${{ secrets.ANDROID_SIGNING_KEY }}
-#          keyAlias: ${{ secrets.ANDROID_KEY_ALIAS }}
-#          keyStorePassword: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-#          keyPassword: ${{ secrets.ANDROID_KEY_PASSWORD }}
-#          buildToolsVersion: 33.0.0
+          releaseDir: ./android/
+          signingKey: ${{ secrets.ANDROID_SIGNING_KEY }}
+          keyAlias: ${{ secrets.ANDROID_KEY_ALIAS }}
+          keyStorePassword: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          keyPassword: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          buildToolsVersion: 33.0.0
 
-#      - name: Upload APK
-#        uses: actions/upload-artifact@v3
-#        with:
-#          name: Signed app bundle
-#          path: ${{steps.sign_app.outputs.signedFile}}
+      - name: Upload App bundle
+        uses: actions/upload-artifact@v3
+        with:
+          name: app-release
+          path: ${{steps.sign_app.outputs.signedFile}}
