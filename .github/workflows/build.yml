@@ -53,8 +53,7 @@ jobs:
           keyPassword: ${{ secrets.ANDROID_KEY_PASSWORD }}
           buildToolsVersion: 33.0.0
 
-      - name: Upload dev APK
-        uses: actions/upload-artifact@v1
+      - uses: actions/upload-artifact@v3
         with:
-          name: app-dev
-          path: app-release.apk
+          name: Signed app bundle
+          path: ${{steps.sign_app.outputs.signedFile}}
