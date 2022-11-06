@@ -23,7 +23,7 @@ jobs:
       - name: Install Ionic
         run: npm install -g @ionic/cli
 
-      - name: Install dpp dependencies
+      - name: Install app dependencies
         run: npm install
 
       - name: Build Ionic
