@@ -27,7 +27,7 @@ export class HomePage {
   cardsInGame: Card[] = [];
 
   async onAdd() {
-    if (this.players.length <= 52) {
+    if (this.players.length < 52) {
       this.players.push({
         playerName: '',
         card: { value: 0, image: 0 },
