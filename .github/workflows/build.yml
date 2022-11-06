@@ -52,3 +52,5 @@ jobs:
         with:
           name: high-card
           path: ${{steps.sign_app.outputs.signedFile}}
+
+echo '1.1.${github.run_number}'
