@@ -40,11 +40,21 @@ jobs:
         with:
           project-path: ./android/
           build-type: assemble
-          output-path: app-debug.apk
+          output-path: app-release.apk
           browserstack-upload: false
+          
+      - name: Sign app APK
+        uses: ilharp/sign-android-release@v1
+        with:
+          releaseDir: ./android/
+          signingKey: ${{ secrets.ANDROID_SIGNING_KEY }}
+          keyAlias: ${{ secrets.ANDROID_KEY_ALIAS }}
+          keyStorePassword: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          keyPassword: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          buildToolsVersion: ${{ secrets.ANDROID_BUILD_TOOLS_VERSION }}
 
       - name: Upload dev APK
         uses: actions/upload-artifact@v1
         with:
           name: app-dev
-          path: app-debug.apk
+          path: app-release.apk
