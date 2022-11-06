@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 jobs:
   build:
-    name: Build APK
+    name: Build Bundle
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source
@@ -32,29 +32,41 @@ jobs:
       - name: Copy Android
         run: ionic capacitor copy android
 
-      - name: Build Android Release APK
+      - name: Build Android Release
         run: ionic capacitor build android --release --prod
 
-      - name: Android Build
+      - name: Android Build Bundle
         uses: sparkfabrik/android-build-action@v1.0.0
         with:
           project-path: ./android/
-          build-type: assemble
-          output-path: app-release.apk
+          build-type: bundle
+          output-path: app-release.aab
+          package-name: com.darthleonard.highcard
+          keystore-content: ${{ secrets.ANDROID_SIGNING_KEY }}
+          keystore-password: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          keystore-alias: ${{ secrets.ANDROID_KEY_ALIAS }}
           browserstack-upload: false
           
-      - name: Sign app APK
-        uses: ilharp/sign-android-release@v1
-        id: sign_app
+      - name: Upload release bunde
+        uses: actions/upload-artifact@v1
         with:
-          releaseDir: ./android/
-          signingKey: ${{ secrets.ANDROID_SIGNING_KEY }}
-          keyAlias: ${{ secrets.ANDROID_KEY_ALIAS }}
-          keyStorePassword: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-          keyPassword: ${{ secrets.ANDROID_KEY_PASSWORD }}
-          buildToolsVersion: 33.0.0
+          name: app-dev
+          path: app-release.aab
+          
+          
+#      - name: Sign app APK
+#        uses: ilharp/sign-android-release@v1
+#        id: sign_app
+#        with:
+#          releaseDir: ./android/
+#          signingKey: ${{ secrets.ANDROID_SIGNING_KEY }}
+#          keyAlias: ${{ secrets.ANDROID_KEY_ALIAS }}
+#          keyStorePassword: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+#          keyPassword: ${{ secrets.ANDROID_KEY_PASSWORD }}
+#          buildToolsVersion: 33.0.0
 
-      - uses: actions/upload-artifact@v3
-        with:
-          name: Signed app bundle
-          path: ${{steps.sign_app.outputs.signedFile}}
+#      - name: Upload APK
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: Signed app bundle
+#          path: ${{steps.sign_app.outputs.signedFile}}
