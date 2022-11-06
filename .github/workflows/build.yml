@@ -37,13 +37,13 @@ jobs:
 
       - name: Generate Android App Bundle
         working-directory: ./android/
-        run: ./gradlew bundle
+        run: ./gradlew bundleRelease
         
       - name: Sign app bundle
         uses: ilharp/sign-android-release@v1
         id: sign_app
         with:
-          releaseDir: ./android/app/build/outputs/bundle/debug/
+          releaseDir: ./android/app/build/outputs/bundle/release/
           signingKey: ${{ secrets.ANDROID_SIGNING_KEY }}
           keyAlias: ${{ secrets.ANDROID_KEY_ALIAS }}
           keyStorePassword: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
