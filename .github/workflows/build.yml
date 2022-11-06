@@ -35,38 +35,12 @@ jobs:
       - name: Ionic build android release
         run: ionic capacitor build android --release --prod
 
-      - name: Android Build bundle
-        uses: sparkfabrik/android-build-action@v1.0.0
-        with:
-          project-path: ./android/
-          build-type: bundle
-          output-path: app-release.aab
-          #package-name: com.darthleonard.highcard
-          #keystore-content: ${{ secrets.ANDROID_SIGNING_KEY }}
-          #keystore-password: ${{ secrets.ANDROID_KEY_PASSWORD }}
-          #keystore-alias: ${{ secrets.ANDROID_KEY_ALIAS }}
-          browserstack-upload: false
-          
-#      - name: Upload release bunde
-#        uses: actions/upload-artifact@v1
-#        with:
-#          name: app-release
-#          path: app-release.aab
-          
-          
-      - name: Sign app bundle
-        uses: ilharp/sign-android-release@v1
-        id: sign_app
-        with:
-          releaseDir: ./android/
-          signingKey: ${{ secrets.ANDROID_SIGNING_KEY }}
-          keyAlias: ${{ secrets.ANDROID_KEY_ALIAS }}
-          keyStorePassword: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-          keyPassword: ${{ secrets.ANDROID_KEY_PASSWORD }}
-          buildToolsVersion: 33.0.0
+      - name: Generate Android App Bundle
+        working-directory: ./android/
+        run: ./gradlew bundle
 
-      - name: Upload App bundle
-        uses: actions/upload-artifact@v3
+      - name: Upload bundle
+        uses: actions/upload-artifact@v1
         with:
-          name: app-release
-          path: ${{steps.sign_app.outputs.signedFile}}
+          name: high-card
+          path: ./android/app/build/outputs/bundle/debug/app-debug.aab
