@@ -38,9 +38,20 @@ jobs:
       - name: Generate Android App Bundle
         working-directory: ./android/
         run: ./gradlew bundle
-
-      - name: Upload bundle
-        uses: actions/upload-artifact@v1
+        
+      - name: Sign app bundle
+        uses: ilharp/sign-android-release@v1
+        id: sign_app
         with:
-          name: high-card
-          path: ./android/app/build/outputs/bundle/debug/app-debug.aab
+          releaseDir: ./android/app/build/outputs/bundle/debug/
+          signingKey: ${{ secrets.ANDROID_SIGNING_KEY }}
+          keyAlias: ${{ secrets.ANDROID_KEY_ALIAS }}
+          keyStorePassword: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          keyPassword: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          buildToolsVersion: 33.0.0
+
+      - name: Upload App bundle
+        uses: actions/upload-artifact@v3
+        with:
+          name: app-release
+          path: ${{steps.sign_app.outputs.signedFile}}
