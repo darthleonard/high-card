@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
 
     namespace 'com.darthleonard.highcard'
-    compileSdkVersion rootProject.ext.compileSdkVersion
+    compileSdk rootProject.ext.compileSdkVersion
     defaultConfig {
         applicationId "com.darthleonard.highcard"
         minSdkVersion rootProject.ext.minSdkVersion
