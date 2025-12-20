@@ -7,14 +7,11 @@
 <ion-content>
   <div id="container">
     <ng-container *ngIf="!players.length; else board">
-      <ion-list lines="none" style="text-align: center">
-        <ion-item></ion-item>
-        <ion-item></ion-item>
-        <ion-item></ion-item>
+      <div style="text-align: center; margin-top: 50%">
         <ion-button (click)="onAdd()" size="large">
           <ion-icon name="person-add-outline"></ion-icon>
         </ion-button>
-      </ion-list>
+      </div>
     </ng-container>
     <ng-template #board>
       <ion-list>
@@ -24,7 +21,7 @@
               <ion-icon name="trash-outline"></ion-icon>
             </ion-item-option>
           </ion-item-options>
-          <ion-item >
+          <ion-item>
             <ion-grid fixed>
               <ion-row>
                 <ion-col size="3">
