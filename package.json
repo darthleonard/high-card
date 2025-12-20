@@ -9,7 +9,8 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "run.pegaso.android": "ionic build && ionic cap sync android && ionic cap open android"
   },
   "private": true,
   "dependencies": {
