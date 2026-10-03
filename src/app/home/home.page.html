@@ -1,66 +1,316 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>High Card</ion-title>
+<ion-header class="ion-no-border app-header">
+  <ion-toolbar class="header-toolbar">
+    <div class="header-inner">
+      <div class="brand">
+        <div class="brand-emblem">
+          <ion-icon name="sparkles-outline"></ion-icon>
+        </div>
+        <div class="brand-text">
+          <h1 class="brand-title">High Card</h1>
+          <p class="brand-subtitle">Soft & simple decision maker</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <!-- Quick Presets -->
+        <ion-button
+          fill="clear"
+          size="small"
+          class="icon-action-btn"
+          (click)="showPresetsModal = true"
+          title="Decision Templates"
+        >
+          <ion-icon slot="icon-only" name="dice-outline"></ion-icon>
+        </ion-button>
+
+        <!-- Sound Toggle -->
+        <ion-button
+          fill="clear"
+          size="small"
+          class="icon-action-btn"
+          (click)="toggleSound()"
+          [title]="soundEnabled ? 'Mute Sounds' : 'Enable Sounds'"
+        >
+          <ion-icon
+            slot="icon-only"
+            [name]="soundEnabled ? 'volume-high-outline' : 'volume-mute-outline'"
+          ></ion-icon>
+        </ion-button>
+
+        <!-- Clear All -->
+        <ion-button
+          fill="clear"
+          size="small"
+          class="icon-action-btn danger-hover"
+          (click)="confirmClearAll()"
+          [disabled]="players.length === 0"
+          title="Clear Table"
+        >
+          <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+        </ion-button>
+      </div>
+    </div>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <div id="container">
-    <ng-container *ngIf="!players.length; else board">
-      <div style="text-align: center; margin-top: 50%">
-        <ion-button (click)="onAdd()" size="large">
-          <ion-icon name="person-add-outline"></ion-icon>
-        </ion-button>
+<ion-content [fullscreen]="true" class="main-content">
+  <div class="content-container">
+    <!-- Quick Add Input Pill -->
+    <section class="quick-add-section">
+      <div class="input-pill-container">
+        <ion-icon name="add-circle-outline" class="input-leading-icon"></ion-icon>
+        <input
+          type="text"
+          class="quick-input"
+          placeholder="Add option (e.g. Sushi, Tokyo, Alice, Movie)..."
+          [(ngModel)]="newPlayerName"
+          (keyup.enter)="onQuickAdd()"
+          maxlength="40"
+        />
+        <button
+          type="button"
+          class="quick-add-btn"
+          (click)="onQuickAdd()"
+          [disabled]="players.length >= 52"
+        >
+          <span>Add</span>
+          <ion-icon name="arrow-up-outline"></ion-icon>
+        </button>
       </div>
-    </ng-container>
-    <ng-template #board>
-      <ion-list>
-        <ion-item-sliding *ngFor="let player of players; let i = index">
-          <ion-item-options side="start">
-            <ion-item-option color="danger" (click)="onDelete(i)">
-              <ion-icon name="trash-outline"></ion-icon>
-            </ion-item-option>
-          </ion-item-options>
-          <ion-item>
-            <ion-grid fixed>
-              <ion-row>
-                <ion-col size="3">
-                  <ion-img
-                    [src]="'assets/cards/' + player.card.image + '.png'"
-                  ></ion-img>
-                </ion-col>
-                <ion-col size="9">
-                  <ion-input
-                    type="text"
-                    placeholder="Player Name"
-                    [(ngModel)]="player.playerName"
-                  >
-                  </ion-input>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
-          </ion-item>
-        </ion-item-sliding>
-      </ion-list>
-    </ng-template>
+
+      <!-- Quick Preset Inspiration Chips -->
+      <div class="preset-chips-scroll">
+        <button
+          type="button"
+          class="preset-chip"
+          *ngFor="let preset of quickPresets"
+          (click)="loadPreset(preset)"
+        >
+          <ion-icon [name]="preset.icon"></ion-icon>
+          <span>{{ preset.label }}</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Winner Celebration Spotlight (when cards are dealt) -->
+    <section class="winner-spotlight" *ngIf="hasDealt && winner">
+      <div class="winner-card">
+        <div class="winner-badge">
+          <ion-icon name="trophy-outline"></ion-icon>
+          <span>Top Decision</span>
+        </div>
+        <div class="winner-body">
+          <div class="winner-name">
+            {{ winner.playerName || 'Top Choice' }}
+          </div>
+          <div class="winner-card-desc">
+            Drawn card:
+            <strong [class.red-suit]="winner.card.isRed">
+              {{ winner.card.suitSymbol }} {{ winner.card.displayName }}
+            </strong>
+            <span class="winner-card-val">(Score: {{ winner.card.value }})</span>
+          </div>
+          <div class="tie-breaker-note" *ngIf="tieBrokenMessage">
+            <ion-icon name="information-circle-outline"></ion-icon>
+            <span>{{ tieBrokenMessage }}</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="players.length === 0">
+      <div class="empty-illustration">
+        <div class="empty-card-stack">
+          <div class="stack-card card-back"></div>
+          <div class="stack-card card-front">
+            <span class="card-sparkle">✨</span>
+            <ion-icon name="heart" class="card-suit-art"></ion-icon>
+          </div>
+        </div>
+      </div>
+      <h2 class="empty-title">Can't decide?</h2>
+      <p class="empty-desc">
+        Add options for anything you want to choose between—names, dinner spots, games, or tasks.
+        Draw the cards and let the highest card make the call.
+      </p>
+      <div class="empty-actions">
+        <button type="button" class="empty-cta-btn" (click)="onAdd()">
+          <ion-icon name="add-outline"></ion-icon>
+          <span>Add First Option</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Active Candidates / Cards List -->
+    <section class="candidates-section" *ngIf="players.length > 0">
+      <div class="section-meta">
+        <span class="count-badge">
+          {{ players.length }} {{ players.length === 1 ? 'option' : 'options' }}
+        </span>
+        <span class="status-hint" *ngIf="!hasDealt">
+          {{ players.length < 2 ? 'Add at least 1 more option to draw' : 'Ready to shuffle & deal' }}
+        </span>
+        <span class="status-hint winner-hint" *ngIf="hasDealt">
+          Decision resolved!
+        </span>
+      </div>
+
+      <div class="cards-list">
+        <div
+          class="option-row-card"
+          *ngFor="let player of players; let i = index"
+          [class.winner-row]="player.isWinner"
+          [class.has-dealt-row]="hasDealt"
+        >
+          <!-- Left: Rank Indicator (when dealt) -->
+          <div class="rank-indicator" *ngIf="hasDealt">
+            <div
+              class="rank-pill"
+              [class.rank-1]="player.rank === 1"
+              [class.rank-2]="player.rank === 2"
+              [class.rank-3]="player.rank === 3"
+            >
+              <ion-icon name="trophy" *ngIf="player.rank === 1"></ion-icon>
+              <span *ngIf="player.rank !== 1">#{{ player.rank }}</span>
+            </div>
+          </div>
+
+          <!-- Playing Card Thumbnail -->
+          <div
+            class="card-thumb-wrapper"
+            [class.card-flipping]="player.isFlipping"
+          >
+            <div class="playing-card-frame">
+              <img
+                [src]="'assets/cards/' + player.card.image + '.png'"
+                [alt]="player.card.displayName || 'Card'"
+                class="card-img"
+              />
+            </div>
+          </div>
+
+          <!-- Middle: Name & Card Metadata -->
+          <div class="option-details">
+            <div class="option-name-container">
+              <input
+                type="text"
+                class="option-name-input"
+                placeholder="Option name..."
+                [(ngModel)]="player.playerName"
+                maxlength="50"
+              />
+            </div>
+
+            <div class="option-meta-tags">
+              <!-- When dealt: Display suit and value -->
+              <span
+                class="card-tag"
+                *ngIf="hasDealt && player.card.image !== 0"
+                [class.red-tag]="player.card.isRed"
+              >
+                <span class="suit-icon">{{ player.card.suitSymbol }}</span>
+                <span class="rank-name">{{ player.card.rankName }}</span>
+                <span class="card-value-pts">• {{ player.card.value }} pts</span>
+              </span>
+
+              <!-- When waiting to deal -->
+              <span class="waiting-tag" *ngIf="!hasDealt">
+                Face Down
+              </span>
+            </div>
+          </div>
+
+          <!-- Right: Delete Option Button -->
+          <button
+            type="button"
+            class="delete-btn"
+            (click)="onDelete(i)"
+            title="Remove option"
+          >
+            <ion-icon name="close-outline"></ion-icon>
+          </button>
+        </div>
+      </div>
+    </section>
   </div>
 </ion-content>
 
-<ion-footer>
-  <ion-toolbar>
-    <ion-grid fixed>
-      <ion-row>
-        <ion-col size="6">
-          <ion-button (click)="onAdd()" expand="block">
-            <ion-icon name="person-add-outline"></ion-icon>
-          </ion-button>
-        </ion-col>
-        <ion-col size="6">
-          <ion-button (click)="onRun()" color="success" expand="block">
-            <ion-icon name="play-circle-outline"></ion-icon>
-          </ion-button>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </ion-toolbar>
+<!-- Bottom Floating Dock -->
+<ion-footer class="ion-no-border floating-footer">
+  <div class="footer-dock-container">
+    <div class="dock-actions">
+      <!-- Add Another Button -->
+      <button
+        type="button"
+        class="dock-secondary-btn"
+        (click)="onAdd()"
+        [disabled]="players.length >= 52"
+        title="Add another option"
+      >
+        <ion-icon name="add-outline"></ion-icon>
+        <span>Add Option</span>
+      </button>
+
+      <!-- Draw / Deal Primary Action -->
+      <button
+        type="button"
+        class="dock-primary-btn"
+        (click)="onRun()"
+        [disabled]="players.length < 2 || isDealing"
+        [class.ready-pulse]="players.length >= 2 && !hasDealt"
+      >
+        <ion-icon
+          [name]="hasDealt ? 'refresh-outline' : 'play-outline'"
+          [class.spin-deal]="isDealing"
+        ></ion-icon>
+        <span>{{ hasDealt ? 'Draw Again' : 'Shuffle & Deal' }}</span>
+      </button>
+    </div>
+  </div>
 </ion-footer>
+
+<!-- Presets Bottom Sheet / Modal -->
+<ion-modal
+  [isOpen]="showPresetsModal"
+  (didDismiss)="showPresetsModal = false"
+  [initialBreakpoint]="0.65"
+  [breakpoints]="[0, 0.65, 0.9]"
+  class="presets-modal"
+>
+  <ng-template>
+    <div class="modal-wrapper">
+      <div class="modal-handle-bar">
+        <div class="modal-handle"></div>
+      </div>
+      <div class="modal-header">
+        <h3 class="modal-title">Decision Templates</h3>
+        <p class="modal-subtitle">Pick a quick preset to instantly populate options</p>
+      </div>
+
+      <div class="presets-grid">
+        <div
+          class="preset-card"
+          *ngFor="let preset of quickPresets"
+          (click)="loadPreset(preset)"
+        >
+          <div class="preset-card-header">
+            <ion-icon [name]="preset.icon" class="preset-card-icon"></ion-icon>
+            <h4 class="preset-card-name">{{ preset.label }}</h4>
+          </div>
+          <p class="preset-card-items">{{ preset.items.join(', ') }}</p>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="modal-close-btn"
+          (click)="showPresetsModal = false"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </ng-template>
+</ion-modal>
