@@ -1,14 +1,20 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TestBed, waitForAsync } from '@angular/core/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideTranslateService } from '@ngx-translate/core';
+import { LanguageService } from './services/language.service';
 
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
-
   beforeEach(waitForAsync(() => {
-
     TestBed.configureTestingModule({
       declarations: [AppComponent],
+      providers: [
+        provideHttpClient(),
+        provideTranslateService({ fallbackLang: 'en-US' }),
+        LanguageService,
+      ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   }));

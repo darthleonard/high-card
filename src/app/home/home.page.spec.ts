@@ -1,15 +1,22 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TestBed, waitForAsync } from '@angular/core/testing';
+import { provideHttpClient } from '@angular/common/http';
+import { provideTranslateService, TranslatePipe } from '@ngx-translate/core';
+import { LanguageService } from '../services/language.service';
 
 import { HomePage } from './home.page';
 
 // https://enappd.com/blog/beginners-guide-to-ionic-angular-unit-testing-part-1/151/
 describe('Home', () => {
-
   beforeEach(waitForAsync(() => {
-
     TestBed.configureTestingModule({
       declarations: [HomePage],
+      imports: [TranslatePipe],
+      providers: [
+        provideHttpClient(),
+        provideTranslateService({ fallbackLang: 'en-US' }),
+        LanguageService,
+      ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   }));

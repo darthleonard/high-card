@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ToastController, AlertController } from '@ionic/angular';
+import { TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
 import { Card, Player, createDeck, UNREVEALED_CARD } from './card';
+import { LanguageService, AppLanguage, LanguageOption } from '../services/language.service';
 
 export interface PresetCategory {
   label: string;
@@ -13,7 +16,7 @@ export interface PresetCategory {
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage implements OnInit {
+export class HomePage implements OnInit, OnDestroy {
   cards: Card[];
   players: Player[] = [];
   cardsInGame: Card[] = [];
@@ -25,42 +28,13 @@ export class HomePage implements OnInit {
   showPresetsModal = false;
   tieBrokenMessage: string | null = null;
 
-  readonly quickPresets: PresetCategory[] = [
-    {
-      label: '🍕 Lunch & Dinner',
-      icon: 'restaurant-outline',
-      items: ['Pizza', 'Sushi', 'Tacos', 'Burgers', 'Thai Noodles'],
-    },
-    {
-      label: '🪙 Simple Choice',
-      icon: 'git-commit-outline',
-      items: ['Option A', 'Option B'],
-    },
-    {
-      label: '👥 Who Goes First?',
-      icon: 'people-outline',
-      items: ['Player 1', 'Player 2', 'Player 3', 'Player 4'],
-    },
-    {
-      label: '🍿 Movie Night',
-      icon: 'film-outline',
-      items: ['Sci-Fi', 'Comedy', 'Psychological Thriller', 'Animation'],
-    },
-    {
-      label: '✈️ Weekend Getaway',
-      icon: 'airplane-outline',
-      items: ['Beachside', 'Mountain Cabin', 'Historic City', 'Lake Resort'],
-    },
-    {
-      label: '🧹 Chore Duty',
-      icon: 'sparkles-outline',
-      items: ['Kitchen & Dishes', 'Trash & Recycle', 'Vacuuming', 'Grocery Run'],
-    },
-  ];
+  private langSub?: Subscription;
 
   constructor(
     private toastController: ToastController,
-    private alertController: AlertController
+    private alertController: AlertController,
+    public languageService: LanguageService,
+    private translate: TranslateService
   ) {
     this.cards = createDeck();
   }
@@ -75,6 +49,118 @@ export class HomePage implements OnInit {
     } catch {
       // Ignore localStorage restrictions
     }
+
+    this.langSub = this.translate.onLangChange.subscribe(() => {
+      if (this.tieBrokenMessage) {
+        this.updateTieBreakerMessage();
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    this.langSub?.unsubscribe();
+  }
+
+  get currentLanguageOption(): LanguageOption {
+    return this.languageService.getCurrentLanguageOption();
+  }
+
+  get quickPresets(): PresetCategory[] {
+    return [
+      {
+        label: this.translate.instant('PRESETS.LUNCH_DINNER.LABEL'),
+        icon: 'restaurant-outline',
+        items: [
+          this.translate.instant('PRESETS.LUNCH_DINNER.ITEM_1'),
+          this.translate.instant('PRESETS.LUNCH_DINNER.ITEM_2'),
+          this.translate.instant('PRESETS.LUNCH_DINNER.ITEM_3'),
+          this.translate.instant('PRESETS.LUNCH_DINNER.ITEM_4'),
+          this.translate.instant('PRESETS.LUNCH_DINNER.ITEM_5'),
+        ],
+      },
+      {
+        label: this.translate.instant('PRESETS.SIMPLE_CHOICE.LABEL'),
+        icon: 'git-commit-outline',
+        items: [
+          this.translate.instant('PRESETS.SIMPLE_CHOICE.ITEM_1'),
+          this.translate.instant('PRESETS.SIMPLE_CHOICE.ITEM_2'),
+        ],
+      },
+      {
+        label: this.translate.instant('PRESETS.WHO_GOES_FIRST.LABEL'),
+        icon: 'people-outline',
+        items: [
+          this.translate.instant('PRESETS.WHO_GOES_FIRST.ITEM_1'),
+          this.translate.instant('PRESETS.WHO_GOES_FIRST.ITEM_2'),
+          this.translate.instant('PRESETS.WHO_GOES_FIRST.ITEM_3'),
+          this.translate.instant('PRESETS.WHO_GOES_FIRST.ITEM_4'),
+        ],
+      },
+      {
+        label: this.translate.instant('PRESETS.MOVIE_NIGHT.LABEL'),
+        icon: 'film-outline',
+        items: [
+          this.translate.instant('PRESETS.MOVIE_NIGHT.ITEM_1'),
+          this.translate.instant('PRESETS.MOVIE_NIGHT.ITEM_2'),
+          this.translate.instant('PRESETS.MOVIE_NIGHT.ITEM_3'),
+          this.translate.instant('PRESETS.MOVIE_NIGHT.ITEM_4'),
+        ],
+      },
+      {
+        label: this.translate.instant('PRESETS.WEEKEND_GETAWAY.LABEL'),
+        icon: 'airplane-outline',
+        items: [
+          this.translate.instant('PRESETS.WEEKEND_GETAWAY.ITEM_1'),
+          this.translate.instant('PRESETS.WEEKEND_GETAWAY.ITEM_2'),
+          this.translate.instant('PRESETS.WEEKEND_GETAWAY.ITEM_3'),
+          this.translate.instant('PRESETS.WEEKEND_GETAWAY.ITEM_4'),
+        ],
+      },
+      {
+        label: this.translate.instant('PRESETS.CHORE_DUTY.LABEL'),
+        icon: 'sparkles-outline',
+        items: [
+          this.translate.instant('PRESETS.CHORE_DUTY.ITEM_1'),
+          this.translate.instant('PRESETS.CHORE_DUTY.ITEM_2'),
+          this.translate.instant('PRESETS.CHORE_DUTY.ITEM_3'),
+          this.translate.instant('PRESETS.CHORE_DUTY.ITEM_4'),
+        ],
+      },
+    ];
+  }
+
+  async openLanguageSelector() {
+    const current = this.languageService.getCurrentLanguage();
+    const alert = await this.alertController.create({
+      header: this.translate.instant('LANGUAGE_MODAL.TITLE'),
+      subHeader: this.translate.instant('LANGUAGE_MODAL.SUBTITLE'),
+      inputs: [
+        {
+          type: 'radio',
+          label: '🇺🇸 English (US)',
+          value: 'en-US',
+          checked: current === 'en-US',
+        },
+        {
+          type: 'radio',
+          label: '🇲🇽 Español (México)',
+          value: 'es-MX',
+          checked: current === 'es-MX',
+        },
+      ],
+      buttons: [
+        { text: this.translate.instant('ALERTS.CANCEL'), role: 'cancel' },
+        {
+          text: 'OK',
+          handler: (lang: AppLanguage) => {
+            if (lang && lang !== current) {
+              this.languageService.setLanguage(lang);
+            }
+          },
+        },
+      ],
+    });
+    await alert.present();
   }
 
   get winner(): Player | null {
@@ -106,7 +192,7 @@ export class HomePage implements OnInit {
     }
 
     const toast = await this.toastController.create({
-      message: 'Maximum limit of 52 options reached (full card deck)!',
+      message: this.translate.instant('ALERTS.MAX_LIMIT'),
       duration: 2000,
       position: 'bottom',
       color: 'warning',
@@ -137,12 +223,12 @@ export class HomePage implements OnInit {
   async confirmClearAll() {
     if (this.players.length === 0) return;
     const alert = await this.alertController.create({
-      header: 'Start Fresh?',
-      message: 'Clear all options and reset the table?',
+      header: this.translate.instant('ALERTS.CLEAR_TITLE'),
+      message: this.translate.instant('ALERTS.CLEAR_MESSAGE'),
       buttons: [
-        { text: 'Cancel', role: 'cancel' },
+        { text: this.translate.instant('ALERTS.CANCEL'), role: 'cancel' },
         {
-          text: 'Clear All',
+          text: this.translate.instant('ALERTS.CLEAR_CONFIRM'),
           role: 'destructive',
           handler: () => {
             this.players = [];
@@ -204,7 +290,7 @@ export class HomePage implements OnInit {
     });
 
     if (tieBroken && this.players.length >= 2 && this.players[0].card.value === this.players[1].card.value) {
-      this.tieBrokenMessage = `Tie-breaker: ${this.players[0].playerName || '1st'} wins via ${this.players[0].card.suitName} (${this.players[0].card.suitSymbol}) over ${this.players[1].card.suitName} (${this.players[1].card.suitSymbol})!`;
+      this.updateTieBreakerMessage();
     } else {
       this.tieBrokenMessage = null;
     }
@@ -216,6 +302,41 @@ export class HomePage implements OnInit {
       this.recalculateRanks();
       this.playWinnerChime();
     }, 350);
+  }
+
+  getCardDisplayName(card: Card): string {
+    if (!card) return '';
+    if (card.image === 0 || card.rankKey === 'CARDS.MYSTERY') {
+      return this.translate.instant('CARDS.MYSTERY');
+    }
+    const rank = card.rankKey ? this.translate.instant(card.rankKey) : (card.rankName || '');
+    const suit = card.suitKey ? this.translate.instant(card.suitKey) : (card.suitName || '');
+    const ofWord = this.translate.instant('CARDS.OF');
+    return `${rank} ${ofWord} ${suit}`;
+  }
+
+  getCardRankName(card: Card): string {
+    if (!card) return '';
+    if (card.rankKey) {
+      return this.translate.instant(card.rankKey);
+    }
+    return card.rankName || '';
+  }
+
+  private updateTieBreakerMessage() {
+    if (this.players.length >= 2 && this.players[0].card.value === this.players[1].card.value) {
+      const p1 = this.players[0];
+      const p2 = this.players[1];
+      const p1Suit = p1.card.suitKey ? this.translate.instant(p1.card.suitKey) : (p1.card.suitName || '');
+      const p2Suit = p2.card.suitKey ? this.translate.instant(p2.card.suitKey) : (p2.card.suitName || '');
+      this.tieBrokenMessage = this.translate.instant('WINNER.TIE_BREAKER', {
+        winner: p1.playerName || this.translate.instant('WINNER.FALLBACK_NAME'),
+        winnerSuit: p1Suit,
+        winnerSymbol: p1.card.suitSymbol || '',
+        loserSuit: p2Suit,
+        loserSymbol: p2.card.suitSymbol || '',
+      });
+    }
   }
 
   private recalculateRanks() {

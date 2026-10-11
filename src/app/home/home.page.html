@@ -6,8 +6,8 @@
           <ion-icon name="sparkles-outline"></ion-icon>
         </div>
         <div class="brand-text">
-          <h1 class="brand-title">High Card</h1>
-          <p class="brand-subtitle">Soft & simple decision maker</p>
+          <h1 class="brand-title">{{ 'APP.TITLE' | translate }}</h1>
+          <p class="brand-subtitle">{{ 'APP.SUBTITLE' | translate }}</p>
         </div>
       </div>
 
@@ -18,7 +18,7 @@
           size="small"
           class="icon-action-btn"
           (click)="showPresetsModal = true"
-          title="Decision Templates"
+          [title]="'TOOLBAR.PRESETS_TITLE' | translate"
         >
           <ion-icon slot="icon-only" name="dice-outline"></ion-icon>
         </ion-button>
@@ -29,12 +29,26 @@
           size="small"
           class="icon-action-btn"
           (click)="toggleSound()"
-          [title]="soundEnabled ? 'Mute Sounds' : 'Enable Sounds'"
+          [title]="(soundEnabled ? 'TOOLBAR.MUTE_SOUNDS' : 'TOOLBAR.ENABLE_SOUNDS') | translate"
         >
           <ion-icon
             slot="icon-only"
             [name]="soundEnabled ? 'volume-high-outline' : 'volume-mute-outline'"
           ></ion-icon>
+        </ion-button>
+
+        <!-- Language Selector -->
+        <ion-button
+          fill="clear"
+          size="small"
+          class="icon-action-btn lang-toggle-btn"
+          (click)="openLanguageSelector()"
+          [title]="'TOOLBAR.CHANGE_LANGUAGE' | translate"
+        >
+          <span class="lang-btn-content">
+            <span class="lang-flag">{{ currentLanguageOption.flag }}</span>
+            <span class="lang-code">{{ currentLanguageOption.shortLabel }}</span>
+          </span>
         </ion-button>
 
         <!-- Clear All -->
@@ -44,7 +58,7 @@
           class="icon-action-btn danger-hover"
           (click)="confirmClearAll()"
           [disabled]="players.length === 0"
-          title="Clear Table"
+          [title]="'TOOLBAR.CLEAR_TABLE' | translate"
         >
           <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
         </ion-button>
@@ -62,7 +76,7 @@
         <input
           type="text"
           class="quick-input"
-          placeholder="Add option (e.g. Sushi, Tokyo, Alice, Movie)..."
+          [placeholder]="'QUICK_ADD.PLACEHOLDER' | translate"
           [(ngModel)]="newPlayerName"
           (keyup.enter)="onQuickAdd()"
           maxlength="40"
@@ -73,7 +87,7 @@
           (click)="onQuickAdd()"
           [disabled]="players.length >= 52"
         >
-          <span>Add</span>
+          <span>{{ 'QUICK_ADD.BUTTON' | translate }}</span>
           <ion-icon name="arrow-up-outline"></ion-icon>
         </button>
       </div>
@@ -97,18 +111,18 @@
       <div class="winner-card">
         <div class="winner-badge">
           <ion-icon name="trophy-outline"></ion-icon>
-          <span>Top Decision</span>
+          <span>{{ 'WINNER.BADGE' | translate }}</span>
         </div>
         <div class="winner-body">
           <div class="winner-name">
-            {{ winner.playerName || 'Top Choice' }}
+            {{ winner.playerName || ('WINNER.FALLBACK_NAME' | translate) }}
           </div>
           <div class="winner-card-desc">
-            Drawn card:
+            {{ 'WINNER.DRAWN_CARD' | translate }}
             <strong [class.red-suit]="winner.card.isRed">
-              {{ winner.card.suitSymbol }} {{ winner.card.displayName }}
+              {{ winner.card.suitSymbol }} {{ getCardDisplayName(winner.card) }}
             </strong>
-            <span class="winner-card-val">(Score: {{ winner.card.value }})</span>
+            <span class="winner-card-val">({{ 'WINNER.SCORE' | translate: { value: winner.card.value } }})</span>
           </div>
           <div class="tie-breaker-note" *ngIf="tieBrokenMessage">
             <ion-icon name="information-circle-outline"></ion-icon>
@@ -129,15 +143,14 @@
           </div>
         </div>
       </div>
-      <h2 class="empty-title">Can't decide?</h2>
+      <h2 class="empty-title">{{ 'EMPTY_STATE.TITLE' | translate }}</h2>
       <p class="empty-desc">
-        Add options for anything you want to choose between—names, dinner spots, games, or tasks.
-        Draw the cards and let the highest card make the call.
+        {{ 'EMPTY_STATE.DESC' | translate }}
       </p>
       <div class="empty-actions">
         <button type="button" class="empty-cta-btn" (click)="onAdd()">
           <ion-icon name="add-outline"></ion-icon>
-          <span>Add First Option</span>
+          <span>{{ 'EMPTY_STATE.CTA' | translate }}</span>
         </button>
       </div>
     </div>
@@ -146,13 +159,13 @@
     <section class="candidates-section" *ngIf="players.length > 0">
       <div class="section-meta">
         <span class="count-badge">
-          {{ players.length }} {{ players.length === 1 ? 'option' : 'options' }}
+          {{ players.length === 1 ? ('CANDIDATES.SINGLE_OPTION' | translate: { count: players.length }) : ('CANDIDATES.MULTIPLE_OPTIONS' | translate: { count: players.length }) }}
         </span>
         <span class="status-hint" *ngIf="!hasDealt">
-          {{ players.length < 2 ? 'Add at least 1 more option to draw' : 'Ready to shuffle & deal' }}
+          {{ (players.length < 2 ? 'CANDIDATES.HINT_NEED_MORE' : 'CANDIDATES.HINT_READY') | translate }}
         </span>
         <span class="status-hint winner-hint" *ngIf="hasDealt">
-          Decision resolved!
+          {{ 'CANDIDATES.HINT_RESOLVED' | translate }}
         </span>
       </div>
 
@@ -184,7 +197,7 @@
             <div class="playing-card-frame">
               <img
                 [src]="'assets/cards/' + player.card.image + '.png'"
-                [alt]="player.card.displayName || 'Card'"
+                [alt]="getCardDisplayName(player.card)"
                 class="card-img"
               />
             </div>
@@ -196,7 +209,7 @@
               <input
                 type="text"
                 class="option-name-input"
-                placeholder="Option name..."
+                [placeholder]="'CANDIDATES.INPUT_PLACEHOLDER' | translate"
                 [(ngModel)]="player.playerName"
                 maxlength="50"
               />
@@ -210,13 +223,13 @@
                 [class.red-tag]="player.card.isRed"
               >
                 <span class="suit-icon">{{ player.card.suitSymbol }}</span>
-                <span class="rank-name">{{ player.card.rankName }}</span>
-                <span class="card-value-pts">• {{ player.card.value }} pts</span>
+                <span class="rank-name">{{ getCardRankName(player.card) }}</span>
+                <span class="card-value-pts">{{ 'CANDIDATES.POINTS' | translate: { value: player.card.value } }}</span>
               </span>
 
               <!-- When waiting to deal -->
               <span class="waiting-tag" *ngIf="!hasDealt">
-                Face Down
+                {{ 'CANDIDATES.FACE_DOWN' | translate }}
               </span>
             </div>
           </div>
@@ -226,7 +239,7 @@
             type="button"
             class="delete-btn"
             (click)="onDelete(i)"
-            title="Remove option"
+            [title]="'CANDIDATES.REMOVE_TITLE' | translate"
           >
             <ion-icon name="close-outline"></ion-icon>
           </button>
@@ -246,10 +259,10 @@
         class="dock-secondary-btn"
         (click)="onAdd()"
         [disabled]="players.length >= 52"
-        title="Add another option"
+        [title]="'ACTIONS.ADD_ANOTHER_TITLE' | translate"
       >
         <ion-icon name="add-outline"></ion-icon>
-        <span>Add Option</span>
+        <span>{{ 'ACTIONS.ADD_OPTION' | translate }}</span>
       </button>
 
       <!-- Draw / Deal Primary Action -->
@@ -264,7 +277,7 @@
           [name]="hasDealt ? 'refresh-outline' : 'play-outline'"
           [class.spin-deal]="isDealing"
         ></ion-icon>
-        <span>{{ hasDealt ? 'Draw Again' : 'Shuffle & Deal' }}</span>
+        <span>{{ (hasDealt ? 'ACTIONS.DRAW_AGAIN' : 'ACTIONS.SHUFFLE_DEAL') | translate }}</span>
       </button>
     </div>
   </div>
@@ -284,8 +297,8 @@
         <div class="modal-handle"></div>
       </div>
       <div class="modal-header">
-        <h3 class="modal-title">Decision Templates</h3>
-        <p class="modal-subtitle">Pick a quick preset to instantly populate options</p>
+        <h3 class="modal-title">{{ 'MODALS.PRESETS_TITLE' | translate }}</h3>
+        <p class="modal-subtitle">{{ 'MODALS.PRESETS_SUBTITLE' | translate }}</p>
       </div>
 
       <div class="presets-grid">
@@ -308,7 +321,7 @@
           class="modal-close-btn"
           (click)="showPresetsModal = false"
         >
-          Close
+          {{ 'MODALS.CLOSE' | translate }}
         </button>
       </div>
     </div>

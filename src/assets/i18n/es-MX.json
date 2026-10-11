@@ -1,0 +1,124 @@
+{
+  "APP": {
+    "TITLE": "High Card",
+    "SUBTITLE": "Toma de decisiones fácil y rápida"
+  },
+  "TOOLBAR": {
+    "PRESETS_TITLE": "Plantillas de decisión",
+    "MUTE_SOUNDS": "Silenciar sonidos",
+    "ENABLE_SOUNDS": "Activar sonidos",
+    "CLEAR_TABLE": "Limpiar mesa",
+    "CHANGE_LANGUAGE": "Cambiar idioma",
+    "LANGUAGE": "Idioma"
+  },
+  "QUICK_ADD": {
+    "PLACEHOLDER": "Agrega una opción (ej. Tacos, Tokio, Checo, Película)...",
+    "BUTTON": "Agregar"
+  },
+  "WINNER": {
+    "BADGE": "Opción Ganadora",
+    "FALLBACK_NAME": "Opción Elegida",
+    "DRAWN_CARD": "Carta sacada:",
+    "SCORE": "Puntaje: {{value}}",
+    "TIE_BREAKER": "Desempate: ¡{{winner}} gana con {{winnerSuit}} ({{winnerSymbol}}) sobre {{loserSuit}} ({{loserSymbol}})!"
+  },
+  "EMPTY_STATE": {
+    "TITLE": "¿No te decides?",
+    "DESC": "Agrega las opciones entre las que quieras elegir: lugares para comer, nombres, juegos o tareas. Barajea las cartas y deja que la carta más alta decida por ti.",
+    "CTA": "Agregar primera opción"
+  },
+  "CANDIDATES": {
+    "SINGLE_OPTION": "{{count}} opción",
+    "MULTIPLE_OPTIONS": "{{count}} opciones",
+    "HINT_NEED_MORE": "Agrega al menos 1 opción más para tirar las cartas",
+    "HINT_READY": "¡Listo para barajear y repartir!",
+    "HINT_RESOLVED": "¡Decisión tomada!",
+    "INPUT_PLACEHOLDER": "Nombre de la opción...",
+    "POINTS": "• {{value}} pts",
+    "FACE_DOWN": "Boca abajo",
+    "REMOVE_TITLE": "Eliminar opción"
+  },
+  "ACTIONS": {
+    "ADD_OPTION": "Agregar opción",
+    "ADD_ANOTHER_TITLE": "Agregar otra opción",
+    "SHUFFLE_DEAL": "Barajear y repartir",
+    "DRAW_AGAIN": "Volver a tirar"
+  },
+  "MODALS": {
+    "PRESETS_TITLE": "Plantillas de decisión",
+    "PRESETS_SUBTITLE": "Elige una plantilla rápida para llenar opciones al instante",
+    "CLOSE": "Cerrar"
+  },
+  "ALERTS": {
+    "CLEAR_TITLE": "¿Empezar de nuevo?",
+    "CLEAR_MESSAGE": "¿Deseas borrar todas las opciones y reiniciar la mesa?",
+    "CANCEL": "Cancelar",
+    "CLEAR_CONFIRM": "Borrar todo",
+    "MAX_LIMIT": "¡Se alcanzó el límite máximo de 52 opciones (baraja completa)!"
+  },
+  "LANGUAGE_MODAL": {
+    "TITLE": "Seleccionar idioma",
+    "SUBTITLE": "Elige tu idioma preferido",
+    "EN_US": "English (US)",
+    "ES_MX": "Español (México)"
+  },
+  "PRESETS": {
+    "LUNCH_DINNER": {
+      "LABEL": "🍕 Comida y Cena",
+      "ITEM_1": "Tacos al pastor",
+      "ITEM_2": "Pizza",
+      "ITEM_3": "Sushi",
+      "ITEM_4": "Hamburguesas",
+      "ITEM_5": "Chilaquiles"
+    },
+    "SIMPLE_CHOICE": {
+      "LABEL": "🪙 Cara o Cruz",
+      "ITEM_1": "Opción A",
+      "ITEM_2": "Opción B"
+    },
+    "WHO_GOES_FIRST": {
+      "LABEL": "👥 ¿Quién va primero?",
+      "ITEM_1": "Jugador 1",
+      "ITEM_2": "Jugador 2",
+      "ITEM_3": "Jugador 3",
+      "ITEM_4": "Jugador 4"
+    },
+    "MOVIE_NIGHT": {
+      "LABEL": "🍿 Noche de Pelis",
+      "ITEM_1": "Ciencia Ficción",
+      "ITEM_2": "Comedia",
+      "ITEM_3": "Suspenso",
+      "ITEM_4": "Animación"
+    },
+    "WEEKEND_GETAWAY": {
+      "LABEL": "✈️ Escapada de Fin",
+      "ITEM_1": "Playa (Cancún)",
+      "ITEM_2": "Cabaña en el bosque",
+      "ITEM_3": "Pueblo Mágico",
+      "ITEM_4": "Balneario"
+    },
+    "CHORE_DUTY": {
+      "LABEL": "🧹 Quehaceres de la Casa",
+      "ITEM_1": "Lavar los trastes",
+      "ITEM_2": "Sacar la basura",
+      "ITEM_3": "Barrer y trapear",
+      "ITEM_4": "Ir al súper"
+    }
+  },
+  "CARDS": {
+    "SUITS": {
+      "CLUBS": "Tréboles",
+      "DIAMONDS": "Diamantes",
+      "HEARTS": "Corazones",
+      "SPADES": "Picas"
+    },
+    "RANKS": {
+      "ACE": "As",
+      "JACK": "Joto",
+      "QUEEN": "Reina",
+      "KING": "Rey"
+    },
+    "OF": "de",
+    "MYSTERY": "Carta misteriosa"
+  }
+}

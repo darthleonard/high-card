@@ -1,0 +1,124 @@
+{
+  "APP": {
+    "TITLE": "High Card",
+    "SUBTITLE": "Soft & simple decision maker"
+  },
+  "TOOLBAR": {
+    "PRESETS_TITLE": "Decision Templates",
+    "MUTE_SOUNDS": "Mute Sounds",
+    "ENABLE_SOUNDS": "Enable Sounds",
+    "CLEAR_TABLE": "Clear Table",
+    "CHANGE_LANGUAGE": "Change Language",
+    "LANGUAGE": "Language"
+  },
+  "QUICK_ADD": {
+    "PLACEHOLDER": "Add option (e.g. Sushi, Tokyo, Alice, Movie)...",
+    "BUTTON": "Add"
+  },
+  "WINNER": {
+    "BADGE": "Top Decision",
+    "FALLBACK_NAME": "Top Choice",
+    "DRAWN_CARD": "Drawn card:",
+    "SCORE": "Score: {{value}}",
+    "TIE_BREAKER": "Tie-breaker: {{winner}} wins via {{winnerSuit}} ({{winnerSymbol}}) over {{loserSuit}} ({{loserSymbol}})!"
+  },
+  "EMPTY_STATE": {
+    "TITLE": "Can't decide?",
+    "DESC": "Add options for anything you want to choose between—names, dinner spots, games, or tasks. Draw the cards and let the highest card make the call.",
+    "CTA": "Add First Option"
+  },
+  "CANDIDATES": {
+    "SINGLE_OPTION": "{{count}} option",
+    "MULTIPLE_OPTIONS": "{{count}} options",
+    "HINT_NEED_MORE": "Add at least 1 more option to draw",
+    "HINT_READY": "Ready to shuffle & deal",
+    "HINT_RESOLVED": "Decision resolved!",
+    "INPUT_PLACEHOLDER": "Option name...",
+    "POINTS": "• {{value}} pts",
+    "FACE_DOWN": "Face Down",
+    "REMOVE_TITLE": "Remove option"
+  },
+  "ACTIONS": {
+    "ADD_OPTION": "Add Option",
+    "ADD_ANOTHER_TITLE": "Add another option",
+    "SHUFFLE_DEAL": "Shuffle & Deal",
+    "DRAW_AGAIN": "Draw Again"
+  },
+  "MODALS": {
+    "PRESETS_TITLE": "Decision Templates",
+    "PRESETS_SUBTITLE": "Pick a quick preset to instantly populate options",
+    "CLOSE": "Close"
+  },
+  "ALERTS": {
+    "CLEAR_TITLE": "Start Fresh?",
+    "CLEAR_MESSAGE": "Clear all options and reset the table?",
+    "CANCEL": "Cancel",
+    "CLEAR_CONFIRM": "Clear All",
+    "MAX_LIMIT": "Maximum limit of 52 options reached (full card deck)!"
+  },
+  "LANGUAGE_MODAL": {
+    "TITLE": "Select Language",
+    "SUBTITLE": "Choose your preferred language",
+    "EN_US": "English (US)",
+    "ES_MX": "Español (México)"
+  },
+  "PRESETS": {
+    "LUNCH_DINNER": {
+      "LABEL": "🍕 Lunch & Dinner",
+      "ITEM_1": "Pizza",
+      "ITEM_2": "Sushi",
+      "ITEM_3": "Tacos",
+      "ITEM_4": "Burgers",
+      "ITEM_5": "Thai Noodles"
+    },
+    "SIMPLE_CHOICE": {
+      "LABEL": "🪙 Simple Choice",
+      "ITEM_1": "Option A",
+      "ITEM_2": "Option B"
+    },
+    "WHO_GOES_FIRST": {
+      "LABEL": "👥 Who Goes First?",
+      "ITEM_1": "Player 1",
+      "ITEM_2": "Player 2",
+      "ITEM_3": "Player 3",
+      "ITEM_4": "Player 4"
+    },
+    "MOVIE_NIGHT": {
+      "LABEL": "🍿 Movie Night",
+      "ITEM_1": "Sci-Fi",
+      "ITEM_2": "Comedy",
+      "ITEM_3": "Psychological Thriller",
+      "ITEM_4": "Animation"
+    },
+    "WEEKEND_GETAWAY": {
+      "LABEL": "✈️ Weekend Getaway",
+      "ITEM_1": "Beachside",
+      "ITEM_2": "Mountain Cabin",
+      "ITEM_3": "Historic City",
+      "ITEM_4": "Lake Resort"
+    },
+    "CHORE_DUTY": {
+      "LABEL": "🧹 Chore Duty",
+      "ITEM_1": "Kitchen & Dishes",
+      "ITEM_2": "Trash & Recycle",
+      "ITEM_3": "Vacuuming",
+      "ITEM_4": "Grocery Run"
+    }
+  },
+  "CARDS": {
+    "SUITS": {
+      "CLUBS": "Clubs",
+      "DIAMONDS": "Diamonds",
+      "HEARTS": "Hearts",
+      "SPADES": "Spades"
+    },
+    "RANKS": {
+      "ACE": "Ace",
+      "JACK": "Jack",
+      "QUEEN": "Queen",
+      "KING": "King"
+    },
+    "OF": "of",
+    "MYSTERY": "Mystery Card"
+  }
+}

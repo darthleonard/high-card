@@ -6,7 +6,9 @@ export interface Card {
   suit?: Suit;
   suitSymbol?: string; // ♣, ♦, ♥, ♠
   suitName?: string; // Clubs, Diamonds, Hearts, Spades
+  suitKey?: string;
   rankName?: string; // 2..10, Jack, Queen, King, Ace
+  rankKey?: string;
   displayName?: string; // e.g. "Ace of Spades"
   suitValue?: number; // 1 (Clubs), 2 (Diamonds), 3 (Hearts), 4 (Spades)
   isRed?: boolean;
@@ -27,11 +29,18 @@ export interface Player {
  */
 export function createDeck(): Card[] {
   const deck: Card[] = [];
-  const suits: { type: Suit; name: string; symbol: string; suitValue: number; isRed: boolean }[] = [
-    { type: 'clubs', name: 'Clubs', symbol: '♣', suitValue: 1, isRed: false },
-    { type: 'diamonds', name: 'Diamonds', symbol: '♦', suitValue: 2, isRed: true },
-    { type: 'hearts', name: 'Hearts', symbol: '♥', suitValue: 3, isRed: true },
-    { type: 'spades', name: 'Spades', symbol: '♠', suitValue: 4, isRed: false },
+  const suits: {
+    type: Suit;
+    name: string;
+    key: string;
+    symbol: string;
+    suitValue: number;
+    isRed: boolean;
+  }[] = [
+    { type: 'clubs', name: 'Clubs', key: 'CARDS.SUITS.CLUBS', symbol: '♣', suitValue: 1, isRed: false },
+    { type: 'diamonds', name: 'Diamonds', key: 'CARDS.SUITS.DIAMONDS', symbol: '♦', suitValue: 2, isRed: true },
+    { type: 'hearts', name: 'Hearts', key: 'CARDS.SUITS.HEARTS', symbol: '♥', suitValue: 3, isRed: true },
+    { type: 'spades', name: 'Spades', key: 'CARDS.SUITS.SPADES', symbol: '♠', suitValue: 4, isRed: false },
   ];
 
   let value = 14;
@@ -44,7 +53,14 @@ export function createDeck(): Card[] {
       12: 'Queen',
       13: 'King',
     };
+    const rankKeys: Record<number, string> = {
+      14: 'CARDS.RANKS.ACE',
+      11: 'CARDS.RANKS.JACK',
+      12: 'CARDS.RANKS.QUEEN',
+      13: 'CARDS.RANKS.KING',
+    };
     const rankName = rankNames[value] || value.toString();
+    const rankKey = rankKeys[value];
 
     deck.push({
       value,
@@ -52,7 +68,9 @@ export function createDeck(): Card[] {
       suit: suit.type,
       suitSymbol: suit.symbol,
       suitName: suit.name,
+      suitKey: suit.key,
       rankName,
+      rankKey,
       displayName: `${rankName} of ${suit.name}`,
       suitValue: suit.suitValue,
       isRed: suit.isRed,
@@ -68,6 +86,7 @@ export const UNREVEALED_CARD: Card = {
   value: 0,
   image: 0,
   rankName: '?',
+  rankKey: 'CARDS.MYSTERY',
   displayName: 'Mystery Card',
   isRed: false,
 };

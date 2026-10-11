@@ -74,6 +74,33 @@
       &.danger-hover:hover {
         --color: var(--ion-color-danger);
       }
+
+      &.lang-toggle-btn {
+        --padding-start: 6px;
+        --padding-end: 6px;
+        border-radius: 8px;
+        border: 1px solid rgba(148, 163, 184, 0.25);
+        background: rgba(255, 255, 255, 0.6);
+
+        .lang-btn-content {
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
+        }
+
+        .lang-flag {
+          font-size: 1.1rem;
+          line-height: 1;
+        }
+
+        .lang-code {
+          font-family: 'Outfit', sans-serif;
+          font-size: 0.72rem;
+          font-weight: 700;
+          letter-spacing: 0.05em;
+          color: var(--ion-text-color);
+        }
+      }
     }
   }
 }
